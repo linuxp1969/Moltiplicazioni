@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,9 +16,10 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvDomanda, tvTimer, tvRisultato;
     private Button bnRisposta1, bnRisposta2, bnRisposta3, bnRisposta4;
+    private Random randomLinux;
     private CountDownTimer cronometro;
 
-    private Random randomLinux;
+    //public Random randomLinux;
     private int risultato = 0, punteggio = 0, punteggiotot=0;
 
     private long mCurrentTime = 30000l;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         bnRisposta2 = findViewById(R.id.bnRisposta2);
         bnRisposta3 = findViewById(R.id.bnRisposta3);
         bnRisposta4 = findViewById(R.id.bnRisposta4);
-
+        randomLinux = new Random();
     }
 
     private void gestisciCronometro() {
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Integer> generaNumero() {
         List<Integer> lista = new ArrayList<>();
+        Random randomLinux = new Random();
 
         for (int i=0; i<4; i++) {
             int numeroRandom1 = randomLinux.nextInt(10)+1;
