@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inizializzaFind() {
+
         tvDomanda = findViewById(R.id.tvDomanda);
         tvTimer = findViewById(R.id.tvTimer);
         tvRisultato = findViewById(R.id.tvRisultato);
@@ -72,21 +74,63 @@ public class MainActivity extends AppCompatActivity {
         bnRisposta3.setEnabled(false);
         bnRisposta4.setEnabled(false);
         tvTimer.setText("Hai finito il tempo");
-
     }
 
-    private void onClick(View v) {
+
+    private List<Integer>  generaNumero() {
+        List<Integer> lista = new ArrayList<>();
+        Random randomLinux = new Random();
+
+        for (int i=0; i<4; i++) {
+            int numeroRandom1 = randomLinux.nextInt(10)+1;
+            int numeroRandom2 = randomLinux.nextInt(10)+1;
+            lista.add(numeroRandom1*numeroRandom2);
+            if (i==0) {
+                tvDomanda.setText("Quale è il risultato di "+numeroRandom1 + "*" + numeroRandom2 + "?");
+                risultato = numeroRandom1*numeroRandom2;
+            }
+        }
+        return lista;
+    }
+
+    private boolean rispostaCorretta (Button bottone) {
+        Log.d("MAMMT","risultato = " + risultato);
+        Log.d("MAMMT","bottone = " + bottone.getText().toString());
+
+        if (bottone.getText().toString().equals(String.valueOf(risultato))) {
+            punteggio++;
+            return true;
+        }
+        return false;
+    }
+
+    private void impostaTestoBottoni (List<Integer> lista) {
+        List<Integer> lista2 = new ArrayList<>();
+
+        for (int i=0; i<4; i++) {
+            int numeroRandom3 = randomLinux.nextInt(4);
+            if (!lista2.contains(numeroRandom3)) {
+                lista2.add(numeroRandom3);
+            }else {
+                i--;
+            }
+        }
+
+        bnRisposta1.setText(String.valueOf(lista.get(lista2.get(0))));
+        bnRisposta2.setText(String.valueOf(lista.get(lista2.get(1))));
+        bnRisposta3.setText(String.valueOf(lista.get(lista2.get(2))));
+        bnRisposta4.setText(String.valueOf(lista.get(lista2.get(3))));
+    }
+
+    public void rispostaClick2(View v) {
         punteggiotot++;
         Button bottone = (Button) v;
-
-        List<Integer> lista = generaNumero();
-        impostaTestoBottoni(lista);
 
         switch (v.getId()) {
             case R.id.bnRisposta1:
                 bottone = bnRisposta1;
                 rispostaCorretta(bottone);
-            break;
+                break;
             case (R.id.bnRisposta2):
                 bottone = bnRisposta2;
                 rispostaCorretta(bottone);
@@ -100,38 +144,9 @@ public class MainActivity extends AppCompatActivity {
                 rispostaCorretta(bottone);
                 break;
         }
-    }
 
-    private List<Integer> generaNumero() {
-        List<Integer> lista = new ArrayList<>();
-        Random randomLinux = new Random();
+        List<Integer> lista = generaNumero();
+        impostaTestoBottoni(lista);
 
-        for (int i=0; i<4; i++) {
-            int numeroRandom1 = randomLinux.nextInt(10)+1;
-            int numeroRandom2 = randomLinux.nextInt(10)+1;
-            lista.add(numeroRandom1*numeroRandom2);
-            if (i==0) {
-                tvDomanda.setText("Quale è il risultato di "+numeroRandom1 + "*" + numeroRandom2 + "?");
-                risultato = numeroRandom1*numeroRandom2;
-
-            }
-
-        }
-        return lista;
-    }
-
-    private boolean rispostaCorretta (Button bottone) {
-        if (bottone.getText().toString().equals(String.valueOf(risultato))) {
-            punteggio++;
-            return true;
-        }
-        return false;
-    }
-
-    private void impostaTestoBottoni (List<Integer> lista) {
-        bnRisposta1.setText(String.valueOf(lista.get(0)));
-        bnRisposta2.setText(String.valueOf(lista.get(1)));
-        bnRisposta3.setText(String.valueOf(lista.get(2)));
-        bnRisposta4.setText(String.valueOf(lista.get(3)));
     }
 }
